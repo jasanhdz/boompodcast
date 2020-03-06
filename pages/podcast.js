@@ -1,43 +1,17 @@
 import React from "react";
-import Link from "next/link";
-import { getData } from "../src/utils/api";
-import audio from "../src/styles/audio";
+import { getData } from "../utils/api";
+import Layout from "../components/Layout";
+import Media from "../components/Media";
 
 const API_AUDIO = "https://api.audioboom.com/audio_clips";
 const PodCast = props => {
   const clip = props.clip;
   return (
-    <div>
-      {audio}
-      <header>Podcasts</header>
-
-      <div className="modal">
-        <div className="clip">
-          <nav>
-            <Link href={`/channel?id=${clip.channel.id}`}>
-              <a className="close">&lt; Volver</a>
-            </Link>
-          </nav>
-
-          <picture>
-            <div
-              style={{
-                backgroundImage: `url(${clip.urls.image ||
-                  clip.channel.urls.logo_image.original})`
-              }}
-            />
-          </picture>
-
-          <div className="player">
-            <h3>{clip.title}</h3>
-            <h6>{clip.channel.title}</h6>
-            <audio controls autoPlay={true}>
-              <source src={clip.urls.high_mp3} type="audio/mpeg" />
-            </audio>
-          </div>
-        </div>
-      </div>
-    </div>
+    <React.Fragment>
+      <Layout title={clip.title}>
+        <Media clip={clip} />
+      </Layout>
+    </React.Fragment>
   );
 };
 

@@ -1,23 +1,30 @@
 import React from "react";
-import { getData } from "../src/utils/api";
+import Error from "./_error";
 
-import Header from "../src/components/Header";
-import Channels from "../src/components/Channels";
+import { getData } from "../utils/api";
+import Layout from "../components/Layout";
+import ChannelGrid from "../components/ChannelGrid";
 
 const Index = props => {
-  // console.log(props);
-  const { channels } = props;
+  const { channels, statusCode } = props;
+  if (statusCode !== 200) {
+    return <Error statusCode={statusCode} />;
+  }
   return (
-    <React.Fragment>
-      <Header />
-      <Channels channels={channels} />
-    </React.Fragment>
+    <Layout title="Podcast">
+      <ChannelGrid channels={channels} />
+    </Layout>
   );
 };
 
-Index.getInitialProps = async () => {
-  let data = await getData("https://api.audioboom.com/channels/recommended");
-  return { channels: data };
+Index.getInitialProps = async ({ res }) => {
+  try {
+    let data = await getData("https://api.audioboom.com/channels/recommended");
+    return { channels: data, statusCode: 200 };
+  } catch (e) {
+    res.statusCode = 503;
+    return { channels: null, statusCode: 503 };
+  }
 };
 
 export default Index;

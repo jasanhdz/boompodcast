@@ -1,0 +1,14 @@
+export default (
+  <style jsx>{`
+    .message {
+      padding: 100px 30px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 2em;
+    }
+    a {
+      color: #8756ca;
+    }
+  `}</style>
+);
